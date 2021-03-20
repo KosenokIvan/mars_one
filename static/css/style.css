@@ -1,0 +1,26 @@
+h4.subtitle {
+   margin-left: 20px;
+   color: gray;
+}
+
+.form-header {
+    display: inline-table;
+}
+
+form, .answer-item, .distribution-container {
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+.work-item {
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.distribution-container > h2, h2.works-header {
+    text-align: center;
+}
+
+.answer-item {
+    font-size: 20px;
+}

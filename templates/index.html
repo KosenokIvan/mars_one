@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2 class="works-header">Works log</h2>
+    <div class="works-container">
+        {% for work in works_list %}
+            <div class="work-item">
+                <h3>Action # {{ loop.index }}</h3>
+                <table class="table">
+                    <thead>
+                        <tr class="table-active">
+                            <th scope="col">Title of activity</th>
+                            <th scope="col">Team leader</th>
+                            <th scope="col">Duration</th>
+                            <th scope="col">List of collaborators</th>
+                            <th scope="col">Is finished</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td bgcolor="#EEEEFF">{{ work.job }}</td>
+                            <td bgcolor="#EEEEFF">{{ work.user.name }} {{ work.user.surname }}</td>
+                            <td bgcolor="#EEEEFF">{{ work.work_size }} hours</td>
+                            <td bgcolor="#EEEEFF">{{ work.collaborators }}</td>
+                            {% if not work.is_finished %}
+                                <td bgcolor="#FFEEFF">Is not finished</td>
+                            {% else %}
+                                <td bgcolor="#EEFFFF">Is finished</td>
+                            {% endif %}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

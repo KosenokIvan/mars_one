@@ -89,7 +89,8 @@ def edit_job(job_id):
     form = JobForm()
     if request.method == "GET":
         db_sess = db_session.create_session()
-        if current_user == db_sess.query(User).filter(User.id == 1).first:
+        print(current_user)
+        if current_user.id == 1:
             job = db_sess.query(Jobs).filter(Jobs.id == job_id).first()
         else:
             job = db_sess.query(Jobs).filter(Jobs.id == job_id, Jobs.user == current_user).first()

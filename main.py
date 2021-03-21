@@ -89,7 +89,6 @@ def edit_job(job_id):
     form = JobForm()
     if request.method == "GET":
         db_sess = db_session.create_session()
-        print(current_user)
         if current_user.id == 1:
             job = db_sess.query(Jobs).filter(Jobs.id == job_id).first()
         else:
@@ -104,7 +103,7 @@ def edit_job(job_id):
             abort(404)
     if form.validate_on_submit():
         db_sess = db_session.create_session()
-        if current_user == db_sess.query(User).filter(User.id == 1).first:
+        if current_user.id == 1:
             job = db_sess.query(Jobs).filter(Jobs.id == job_id).first()
         else:
             job = db_sess.query(Jobs).filter(Jobs.id == job_id, Jobs.user == current_user).first()
@@ -122,6 +121,22 @@ def edit_job(job_id):
         else:
             abort(404)
     return render_template("job.html", form=form, title="Редактировать работу")
+
+
+@app.route("/delete_job/<int:job_id>", methods=["GET", "POST"])
+@login_required
+def delete_job(job_id):
+    db_sess = db_session.create_session()
+    if current_user.id == 1:
+        job = db_sess.query(Jobs).filter(Jobs.id == job_id).first()
+    else:
+        job = db_sess.query(Jobs).filter(Jobs.id == job_id, Jobs.user == current_user).first()
+    if job:
+        db_sess.delete(job)
+        db_sess.commit()
+    else:
+        abort(404)
+    return redirect("/")
 
 
 @app.errorhandler(401)

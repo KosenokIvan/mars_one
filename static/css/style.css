@@ -12,7 +12,7 @@ form, .answer-item, .distribution-container {
     margin-right: 20%;
 }
 
-.work-item {
+.work-item, .btn_container {
     margin-left: 10%;
     margin-right: 10%;
 }

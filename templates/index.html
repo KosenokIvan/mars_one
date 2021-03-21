@@ -3,6 +3,11 @@
 {% block content %}
     <h2 class="works-header">Works log</h2>
     <div class="works-container">
+        {% if current_user.is_authenticated %}
+        <div class="btn_container">
+            <a class="btn btn-secondary" href="/job">Добавить работу</a>
+        </div>
+        {% endif %}
         {% for work in works_list %}
             <div class="work-item">
                 <h3>Action # {{ loop.index }}</h3>
@@ -30,6 +35,13 @@
                         </tr>
                     </tbody>
                 </table>
+                {% if current_user.is_authenticated and
+                (current_user.id == 1 or current_user == work.user) %}
+                <div>
+                    <a href="/job/{{ work.id }}" class="btn btn-warning">Изменить</a>
+                    <a href="/delete_job/{{ work.id }}" class="btn btn-danger">Удалить</a>
+                </div>
+                {% endif %}
             </div>
         {% endfor %}
     </div>

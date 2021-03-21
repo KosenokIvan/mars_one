@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="alert alert-danger">
+        <h2>Нет авторизации</h2>
+        <p>
+            <a href="/register">
+                Зарегистрируйтесь
+            </a> или
+            <a href="/login">
+                войдите в аккаунт
+            </a>, чтобы выполнить это действие
+        </p>
+    </div>
+{% endblock %}

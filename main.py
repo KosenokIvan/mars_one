@@ -66,6 +66,7 @@ def index():
 
 
 @app.route("/job", methods=["GET", "POST"])
+@login_required
 def add_job():
     form = JobForm()
     if form.validate_on_submit():
@@ -80,6 +81,11 @@ def add_job():
         db_sess.commit()
         return redirect('/')
     return render_template('job.html', title='Добавить работу', form=form)
+
+
+@app.errorhandler(401)
+def unauthorized(error):
+    return render_template("unauthorized.html", title="Нет авторизации")
 
 
 @app.route('/logout')

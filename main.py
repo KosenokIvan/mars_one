@@ -3,8 +3,10 @@ from flask_login import LoginManager, login_user, login_required, logout_user, c
 from data import db_session, jobs_api
 from data.users import User
 from data.jobs import Jobs
+from data.departments import Department
 from forms.user import LoginForm, RegisterForm
 from forms.job import JobForm
+from forms.department import DepartmentForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -137,6 +139,90 @@ def delete_job(job_id):
     else:
         abort(404)
     return redirect("/")
+
+
+@app.route("/departments")
+def departments_list():
+    db_sess = db_session.create_session()
+    departments = db_sess.query(Department).all()
+    return render_template("departments_list.html", departments_list=departments,
+                           title="Список департаментов")
+
+
+@app.route("/department", methods=["GET", "POST"])
+@login_required
+def add_department():
+    form = DepartmentForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        if not db_sess.query(User).filter(User.id == form.chief.data).first():
+            return render_template("department.html", title="Добавить департамент",
+                                   form=form, message="Шеф не найден")
+        department = Department(
+            title=form.title.data, chief=form.chief.data,
+            members=form.members.data, email=form.email.data
+        )
+        db_sess.add(department)
+        db_sess.commit()
+        return redirect('/departments')
+    return render_template('department.html', title='Добавить департамент', form=form)
+
+
+@app.route("/department/<int:department_id>", methods=["GET", "POST"])
+@login_required
+def edit_department(department_id):
+    form = DepartmentForm()
+    if request.method == "GET":
+        db_sess = db_session.create_session()
+        if current_user.id == 1:
+            department = db_sess.query(Department).filter(Department.id == department_id).first()
+        else:
+            department = db_sess.query(Department).filter(Department.id == department_id,
+                                                          Department.user == current_user).first()
+        if department:
+            form.title.data = department.title
+            form.chief.data = department.chief
+            form.members.data = department.members
+            form.email.data = department.email
+        else:
+            abort(404)
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        if current_user.id == 1:
+            department = db_sess.query(Department).filter(Department.id == department_id).first()
+        else:
+            department = db_sess.query(Department).filter(Department.id == department_id,
+                                                           Department.user == current_user).first()
+        if department:
+            if not db_sess.query(User).filter(User.id == form.chief.data).first():
+                return render_template("department.html", title="Добавить департамент",
+                                       form=form, message="Шеф не найден")
+            department.title = form.title.data
+            department.chief = form.chief.data
+            department.members = form.members.data
+            department.email = form.email.data
+            db_sess.commit()
+            return redirect("/departments")
+        else:
+            abort(404)
+    return render_template("department.html", form=form, title="Редактировать департамент")
+
+
+@app.route("/delete_department/<int:department_id>", methods=["GET", "POST"])
+@login_required
+def delete_department(department_id):
+    db_sess = db_session.create_session()
+    if current_user.id == 1:
+        department = db_sess.query(Department).filter(Department.id == department_id).first()
+    else:
+        department = db_sess.query(Department).filter(Department.id == department_id,
+                                                       Department.user == current_user).first()
+    if department:
+        db_sess.delete(department)
+        db_sess.commit()
+    else:
+        abort(404)
+    return redirect("/departments")
 
 
 @app.errorhandler(401)

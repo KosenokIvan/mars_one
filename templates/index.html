@@ -3,11 +3,12 @@
 {% block content %}
     <h2 class="works-header">Works log</h2>
     <div class="works-container">
-        {% if current_user.is_authenticated %}
         <div class="btn_container">
-            <a class="btn btn-secondary" href="/job">Добавить работу</a>
+            <a href="/departments" class="btn btn-secondary">К списку департаментов</a>
+            {% if current_user.is_authenticated %}
+                <a class="btn btn-secondary" href="/job">Добавить работу</a>
+            {% endif %}
         </div>
-        {% endif %}
         {% for work in works_list %}
             <div class="work-item">
                 <h3>Action # {{ work.id }}</h3>

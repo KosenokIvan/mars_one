@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2 class="works-header">List of Departments</h2>
+    <h2 class="works-header">Список департаментов</h2>
     <div class="works-container">
         <div class="btn_container">
             <a href="/" class="btn btn-secondary">К списку работ</a>
@@ -11,14 +11,14 @@
         </div>
         {% for department in departments_list %}
             <div class="work-item">
-                <h3>Department # {{ department.id }}</h3>
+                <h3>Департамент # {{ department.id }}</h3>
                 <table class="table">
                     <thead>
                         <tr class="table-active">
-                            <th scope="col">Title of department</th>
-                            <th scope="col">Chief</th>
-                            <th scope="col">Members</th>
-                            <th scope="col">Department Email</th>
+                            <th scope="col" width="30%">Название</th>
+                            <th scope="col" width="20%">Шеф</th>
+                            <th scope="col" width="20%">Участники</th>
+                            <th scope="col" width="30%">Email</th>
                         </tr>
                     </thead>
                     <tbody>

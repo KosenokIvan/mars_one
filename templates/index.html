@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2 class="works-header">Works log</h2>
+    <h2 class="works-header">Список работ</h2>
     <div class="works-container">
         <div class="btn_container">
             <a href="/departments" class="btn btn-secondary">К списку департаментов</a>
@@ -11,27 +11,27 @@
         </div>
         {% for work in works_list %}
             <div class="work-item">
-                <h3>Action # {{ work.id }}</h3>
+                <h3>Работа # {{ work.id }}</h3>
                 <table class="table">
                     <thead>
                         <tr class="table-active">
-                            <th scope="col">Title of activity</th>
-                            <th scope="col">Team leader</th>
-                            <th scope="col">Duration</th>
-                            <th scope="col">List of collaborators</th>
-                            <th scope="col">Is finished</th>
+                            <th scope="col" width="30%">Название</th>
+                            <th scope="col" width="20%">Руководитель</th>
+                            <th scope="col" width="20%">Продолжительность (в часах)</th>
+                            <th scope="col" width="20%">Список участников</th>
+                            <th scope="col" width="10%">Завершённость</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td bgcolor="#EEEEFF">{{ work.job }}</td>
                             <td bgcolor="#EEEEFF">{{ work.user.name }} {{ work.user.surname }}</td>
-                            <td bgcolor="#EEEEFF">{{ work.work_size }} hours</td>
+                            <td bgcolor="#EEEEFF">{{ work.work_size }}</td>
                             <td bgcolor="#EEEEFF">{{ work.collaborators }}</td>
                             {% if not work.is_finished %}
-                                <td bgcolor="#FFEEFF">Is not finished</td>
+                                <td bgcolor="#FFEEFF">Незакончена</td>
                             {% else %}
-                                <td bgcolor="#EEFFFF">Is finished</td>
+                                <td bgcolor="#EEFFFF">Закончена</td>
                             {% endif %}
                         </tr>
                     </tbody>

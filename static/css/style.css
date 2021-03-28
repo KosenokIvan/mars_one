@@ -17,7 +17,7 @@ form, .answer-item, .distribution-container {
     margin-right: 10%;
 }
 
-.distribution-container > h2, h2.works-header {
+.distribution-container > h2, h2.works-header, th, tr {
     text-align: center;
 }
 

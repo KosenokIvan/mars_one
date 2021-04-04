@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import jsonify, make_response
+from flask import jsonify
 from flask_restful import abort, Resource
 from . import db_session
 from .users import User
@@ -73,7 +73,7 @@ class UsersListResource(Resource):
         user.set_password(args["password"])
         if "id" in args:
             if db_sess.query(User).get(args["id"]):
-                abort(400, message=f"ID {args['id']} already exists")
+                abort(400, message=f"User {args['id']} already exists")
             user.id = args["id"]
         db_sess.add(user)
         db_sess.commit()

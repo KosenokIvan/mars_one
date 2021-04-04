@@ -1,4 +1,5 @@
-from flask import jsonify
+from datetime import datetime
+from flask import jsonify, make_response
 from flask_restful import abort, Resource
 from . import db_session
 from .users import User
@@ -26,6 +27,24 @@ class UsersResource(Resource):
         db_sess = db_session.create_session()
         user = db_sess.query(User).get(user_id)
         db_sess.delete(user)
+        db_sess.commit()
+        return jsonify({"success": "OK"})
+
+    def put(self, user_id):
+        args = parser.parse_args()
+        abort_if_user_not_found(user_id)
+        db_sess = db_session.create_session()
+        user = db_sess.query(User).get(user_id)
+        user.surname = args["surname"] if args["surname"] is not None else user.surname
+        user.name = args["name"] if args["name"] is not None else user.name
+        user.age = args["age"] if args["age"] is not None else user.age
+        user.position = args["position"] if args["position"] is not None else user.position
+        user.speciality = args["speciality"] if args["speciality"] is not None else user.speciality
+        user.address = args["address"] if args["address"] is not None else user.address
+        user.email = args["email"] if args["email"] is not None else user.email
+        if args["password"] is not None:
+            user.set_password(args["password"])
+        user.modified_date = datetime.now()
         db_sess.commit()
         return jsonify({"success": "OK"})
 

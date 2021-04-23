@@ -1,3 +1,4 @@
+import json
 from flask import Flask, render_template, redirect, request, abort, make_response, jsonify
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_restful import Api
@@ -225,6 +226,13 @@ def delete_department(department_id):
     else:
         abort(404)
     return redirect("/departments")
+
+
+@app.route("/member")
+def member():
+    with open("templates/members.json", "r", encoding="utf-8") as json_file:
+        astronauts_list = json.load(json_file)["members"]
+    return render_template("member.html", title="member", astronauts_list=astronauts_list)
 
 
 @app.errorhandler(401)

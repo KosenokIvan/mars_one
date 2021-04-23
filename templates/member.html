@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% set astronaut = astronauts_list|random %}
+    <div class="col-auto" align="center">
+        <h3>{{ astronaut["name"] }} {{ astronaut["surname"] }}</h3>
+        <img src="{{ astronaut['photo'] }}" alt="" style="width: 60%">
+        <p>
+            {{ astronaut["professions"]|sort|join(", ") }}
+        </p>
+    </div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{
+    "members": [
+        {
+            "name": "Ридли",
+            "surname": "Скотт",
+            "photo": "https://dictionary.cambridge.org/ru/images/thumb/astron_noun_002_01859.jpg?version=5.0.161",
+            "professions": [
+              "биолог",
+              "астрогеолог"
+            ]
+        },
+        {
+            "name": "Энди",
+            "surname": "Уир",
+            "photo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYP7p4EhtxJMIU-S7r6S4VYwe5cYlkCVnwEg&usqp=CAU",
+            "professions": [
+              "астрогеолог",
+              "специалист по радиационной защите"
+            ]
+        },
+        {
+            "name": "Марк",
+            "surname": "Уотни",
+            "photo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsR2pXrn0ORcGbqZSxgk-cNXrRqvHIyFEoYw&usqp=CAU",
+            "professions": [
+              "специалист по снабжению",
+              "специалист по логистике"
+            ]
+        },
+        {
+            "name": "Венката",
+            "surname": "Капур",
+            "photo": "https://www.freevector.com/uploads/vector/preview/1378/FreeVector-Vector-Astronaut.jpg",
+            "professions": [
+              "химик",
+              "биолог"
+            ]
+        },
+        {
+            "name": "Тедди",
+            "surname": "Сандерс",
+            "photo": "https://www.freevector.com/uploads/vector/preview/4894/small_1x_FreeVector-Space-Suit-Silhouette.jpg",
+            "professions": [
+              "специалист по терраформированию",
+              "специалист по геологической разведке"
+            ]
+        },
+        {
+            "name": "Шон",
+            "surname": "Бин",
+            "photo": "https://media.istockphoto.com/vectors/astronaut-flat-design-isolated-on-white-background-vector-id1066284708?b=1&k=6&m=1066284708&s=612x612&w=0&h=JaqfGpw0YtBjtdPu1EXfwZ5r4skjKbXvw0AqLHhLcYQ=",
+            "professions": [
+              "врач",
+              "астрогеолог"
+            ]
+        }
+    ]
+}

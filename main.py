@@ -1,4 +1,9 @@
 import json
+import os
+from string import ascii_letters, digits
+from random import choices
+from io import BytesIO
+from PIL import Image
 from flask import Flask, render_template, redirect, request, abort, make_response, jsonify
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_restful import Api
@@ -9,6 +14,7 @@ from data.departments import Department
 from forms.user import LoginForm, RegisterForm
 from forms.job import JobForm
 from forms.department import DepartmentForm
+from forms.gallery import GalleryForm
 
 app = Flask(__name__)
 api = Api(app)
@@ -233,6 +239,22 @@ def member():
     with open("templates/members.json", "r", encoding="utf-8") as json_file:
         astronauts_list = json.load(json_file)["members"]
     return render_template("member.html", title="member", astronauts_list=astronauts_list)
+
+
+@app.route("/gallery", methods=["GET", "POST"])
+def gallery():
+    form = GalleryForm()
+    if form.validate_on_submit():
+        image = Image.open(BytesIO(form.image.data.read()))
+        while True:
+            filename = f"{''.join(choices(ascii_letters + digits, k=64))}.png"
+            if not os.path.exists(f"static/img/mars_images/{filename}"):
+                break
+        image.save(f"static/img/mars_images/{filename}")
+        return redirect("/gallery")
+    images_list = os.listdir("static/img/mars_images")
+    return render_template("gallery.html", title="Галерея с загрузкой",
+                           images_list=images_list, form=form)
 
 
 @app.errorhandler(401)

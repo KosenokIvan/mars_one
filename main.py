@@ -11,6 +11,7 @@ from data import db_session, jobs_api, users_api, users_resource, jobs_resource
 from data.users import User
 from data.jobs import Jobs
 from data.departments import Department
+from data.categories import Category
 from forms.user import LoginForm, RegisterForm
 from forms.job import JobForm
 from forms.department import DepartmentForm
@@ -80,14 +81,18 @@ def index():
 @login_required
 def add_job():
     form = JobForm()
+    db_sess = db_session.create_session()
+    form.categories.choices = [(category.id, category.name)
+                               for category in db_sess.query(Category).all()]
     if form.validate_on_submit():
-        db_sess = db_session.create_session()
         if not db_sess.query(User).filter(User.id == form.team_leader.data).first():
             return render_template("job.html", title="Добавить работу",
                                    form=form, message="Тимлидер не найден")
         job = Jobs(team_leader=form.team_leader.data, job=form.title.data,
                    work_size=form.work_size.data, collaborators=form.collaborators.data,
-                   is_finished=form.is_finished.data)
+                   is_finished=form.is_finished.data,
+                   categories=[db_sess.query(Category).get(category_id)
+                               for category_id in form.categories.data])
         db_sess.add(job)
         db_sess.commit()
         return redirect('/')
@@ -98,8 +103,10 @@ def add_job():
 @login_required
 def edit_job(job_id):
     form = JobForm()
+    db_sess = db_session.create_session()
+    form.categories.choices = [(category.id, category.name)
+                               for category in db_sess.query(Category).all()]
     if request.method == "GET":
-        db_sess = db_session.create_session()
         if current_user.id == 1:
             job = db_sess.query(Jobs).filter(Jobs.id == job_id).first()
         else:
@@ -110,10 +117,10 @@ def edit_job(job_id):
             form.work_size.data = job.work_size
             form.collaborators.data = job.collaborators
             form.is_finished.data = job.is_finished
+            form.categories.data = [category.id for category in job.categories]
         else:
             abort(404)
     if form.validate_on_submit():
-        db_sess = db_session.create_session()
         if current_user.id == 1:
             job = db_sess.query(Jobs).filter(Jobs.id == job_id).first()
         else:
@@ -127,6 +134,8 @@ def edit_job(job_id):
             job.work_size = form.work_size.data
             job.collaborators = form.collaborators.data
             job.is_finished = form.is_finished.data
+            job.categories = [db_sess.query(Category).get(category_id)
+                              for category_id in form.categories.data]
             db_sess.commit()
             return redirect("/")
         else:
@@ -201,7 +210,7 @@ def edit_department(department_id):
             department = db_sess.query(Department).filter(Department.id == department_id).first()
         else:
             department = db_sess.query(Department).filter(Department.id == department_id,
-                                                           Department.user == current_user).first()
+                                                          Department.user == current_user).first()
         if department:
             if not db_sess.query(User).filter(User.id == form.chief.data).first():
                 return render_template("department.html", title="Добавить департамент",
@@ -225,7 +234,7 @@ def delete_department(department_id):
         department = db_sess.query(Department).filter(Department.id == department_id).first()
     else:
         department = db_sess.query(Department).filter(Department.id == department_id,
-                                                       Department.user == current_user).first()
+                                                      Department.user == current_user).first()
     if department:
         db_sess.delete(department)
         db_sess.commit()

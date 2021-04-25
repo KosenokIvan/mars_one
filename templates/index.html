@@ -15,10 +15,11 @@
                 <table class="table">
                     <thead>
                         <tr class="table-active">
-                            <th scope="col" width="30%">Название</th>
+                            <th scope="col" width="25%">Название</th>
                             <th scope="col" width="20%">Руководитель</th>
-                            <th scope="col" width="20%">Продолжительность (в часах)</th>
-                            <th scope="col" width="20%">Список участников</th>
+                            <th scope="col" width="15%">Продолжительность (в часах)</th>
+                            <th scope="col" width="15%">Список участников</th>
+                            <th scope="col" width="15%">Категории</th>
                             <th scope="col" width="10%">Завершённость</th>
                         </tr>
                     </thead>
@@ -28,6 +29,13 @@
                             <td bgcolor="#EEEEFF">{{ work.user.name }} {{ work.user.surname }}</td>
                             <td bgcolor="#EEEEFF">{{ work.work_size }}</td>
                             <td bgcolor="#EEEEFF">{{ work.collaborators }}</td>
+                            <td bgcolor="#EEEEFF">
+                                {% for category in work.categories %}
+                                    <span>
+                                        {{ category.name }}{% if not loop.last %}, {% endif %}
+                                    </span>
+                                {% endfor %}
+                            </td>
                             {% if not work.is_finished %}
                                 <td bgcolor="#FFEEFF">Незакончена</td>
                             {% else %}
